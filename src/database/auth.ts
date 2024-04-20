@@ -5,8 +5,8 @@ import { cookies } from "next/headers";
 
 export const lucia = new Lucia(adapter, {
   getUserAttributes: (user: any) => {
-    const { id, email } = user;
-    return { id, email };
+    const { id, email, isAdmin } = user;
+    return { id, email, isAdmin };
   },
   sessionCookie: {
     // this sets cookies with super long expiration
