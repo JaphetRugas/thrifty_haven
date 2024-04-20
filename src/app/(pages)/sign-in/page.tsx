@@ -1,11 +1,14 @@
 import SignInForm from "@/components/SignInForm";
 import { validateRequest } from "@/database/auth";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 export default async function SignInPage() {
-  const { user } = await validateRequest(); 
-  if (user) {
-    redirect("/");
+  const { user } = await validateRequest();
+  if (user && !user.isAdmin) {
+    redirect("/")
+  }
+  if (user?.isAdmin) {
+    notFound();
   }
 
   return (
