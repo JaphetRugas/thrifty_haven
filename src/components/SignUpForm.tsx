@@ -7,8 +7,7 @@ import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import {
   Form,
-  FormControl,
-  FormDescription,
+  FormControl, 
   FormField,
   FormItem,
   FormLabel,
@@ -26,8 +25,7 @@ export default function SignUpForm() {
   const form = useForm<z.infer<typeof signUpFormSchema>>({
     resolver: zodResolver(signUpFormSchema),
     defaultValues: {
-      email: "",
-      firstName: "",
+      email: "", 
       lastName: "",
       age: "",
       birthday: "",

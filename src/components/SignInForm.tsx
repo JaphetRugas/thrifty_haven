@@ -7,8 +7,7 @@ import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import {
   Form,
-  FormControl,
-  FormDescription,
+  FormControl, 
   FormField,
   FormItem,
   FormLabel,
@@ -32,8 +31,7 @@ export default function SignInForm() {
   });
 
   // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof signInFormSchema>) {
-    console.log(values)
+  async function onSubmit(values: z.infer<typeof signInFormSchema>) { 
     const res = await signIn(values);
   }
 
