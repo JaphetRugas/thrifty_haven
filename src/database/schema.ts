@@ -19,7 +19,6 @@ export const userTable = pgTable("user_table", {
     }).notNull(),
 });
 
-
 export const sessionUserTable = pgTable("user_session", {
 	id: text("id").primaryKey(),
 	userId: text("user_id")
