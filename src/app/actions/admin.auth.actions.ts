@@ -8,10 +8,12 @@ import { lucia, validateRequest } from "@/database/auth"
 import { cookies } from "next/headers"
 import { eq } from "drizzle-orm"
 
-export const signIn = async (values: z.infer<typeof signInFormSchema>) => { 
+export const signIn = async (values: z.infer<typeof signInFormSchema>) => {  
     const existingUser = await db.query.userTable.findFirst({
         where: (table) => eq(table.email, values.email),
     }) 
+
+    console.log(existingUser)
 
     if (!existingUser) {
         return {
