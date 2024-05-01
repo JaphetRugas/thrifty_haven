@@ -88,3 +88,4 @@ export async function POST(req: NextRequest) {
         console.error('Error uploading image to Cloud Storage:', error);
     }
 }
+
