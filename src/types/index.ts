@@ -1,4 +1,16 @@
 import { z } from "zod"
+let imageValidator;
+
+if (typeof window === "undefined") {
+  imageValidator = z.null();
+} else {
+  imageValidator = z
+    .instanceof(File)
+    .refine((file) => file?.type === "image/png" || file?.type === "image/jpeg", {
+      message: "Image file must be a png or jpg",
+    });
+}
+
 
 export const signInFormSchema = z.object({
   email: z.string().email(),
@@ -42,3 +54,15 @@ export const signUpFormSchema = z.object({
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });
+
+export const productFormSchema = z.object({
+  name: z.string().min(1, { message: "Name is required" }),
+  description: z.string().min(1, { message: "Description is required" }),
+  price: z
+    .string()
+    .regex(/^\d+$/, { message: "Price must be a positive integer" }),
+  quantityAvailable: z
+    .string()
+    .regex(/^\d+$/, { message: "Quantity must be a positive integer" }),
+  image: imageValidator,
+});

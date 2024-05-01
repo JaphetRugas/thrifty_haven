@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, boolean} from "drizzle-orm/pg-core"; 
+import { pgTable, text, timestamp, boolean, integer} from "drizzle-orm/pg-core"; 
 
 export const userTable = pgTable("user_table", {
     id: text("id").primaryKey(),
@@ -28,4 +28,22 @@ export const sessionUserTable = pgTable("user_session", {
 		withTimezone: true,
 		mode: "date"
 	}).notNull()
+});
+
+export const productTable = pgTable("product_table", {
+    id: text("id").primaryKey(),
+    name: text("name").notNull().unique(),
+    description: text("description"),
+    price: integer("price").notNull(), 
+    quantityAvailable: integer("quantity_available").notNull(), 
+    image: text("image_url"),  
+    isActive: boolean("is_active").default(true).notNull(),
+    createdAt: timestamp("created_at", {
+        withTimezone: true,
+        mode: "date"
+    }).notNull(),
+    updatedAt: timestamp("updated_at", {
+        withTimezone: true,
+        mode: "date"
+    }).notNull()
 });
