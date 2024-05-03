@@ -13,6 +13,8 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Input } from "@/components/ui/input"
 import { useRouter } from "next/navigation";
 import { productFormSchema } from "@/types";
@@ -50,13 +52,20 @@ export default function ProductForm() {
         formData.append("price", values.price);
         formData.append("quantityAvailable", values.quantityAvailable);
         formData.append("image", fileImage);
-        
-        console.log(formData)
 
-        const response = await fetch('/api/admin', {
+        const response = await fetch('/api/admin/products', {
             method: 'POST',
             body: formData,
         });
+
+        if (response.ok) {
+            toast.success('Product uploaded successfully');
+            setTimeout(() => {
+                router.push('/admin/products');
+            }, 3000);
+        } else {
+            toast.error('Failed to upload product');
+        }
     }
 
     // Function to handle file change
@@ -70,81 +79,85 @@ export default function ProductForm() {
     return (
         <>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                    <FormField
-                        control={form.control}
-                        name="name"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Product Name</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="shadcn" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 mt-5">
+                    <div className="bg-white p-6 rounded-lg shadow-md">
+                        <FormField
+                            control={form.control}
+                            name="name"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Product Name</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Enter product name" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
 
-                    <FormField
-                        control={form.control}
-                        name="description"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Product Description</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="shadcn" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+                        <FormField
+                            control={form.control}
+                            name="description"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Product Description</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Enter product description" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
 
-                    <FormField
-                        control={form.control}
-                        name="price"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Product Price</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="shadcn" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+                        <FormField
+                            control={form.control}
+                            name="price"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Product Price</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Enter product price" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
 
-                    <FormField
-                        control={form.control}
-                        name="quantityAvailable"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Product Quantity Available</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="shadcn" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+                        <FormField
+                            control={form.control}
+                            name="quantityAvailable"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Product Quantity Available</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Enter quantity available" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
 
-                    <FormField
-                        control={form.control}
-                        name="image"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Product Image</FormLabel>
-                                <FormControl>
-                                    <FileInput onChange={handleFileChange} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-
+                        <FormField
+                            control={form.control}
+                            name="image"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Product Image</FormLabel>
+                                    <FormControl>
+                                        <label htmlFor="fileInput" className="flex items-center justify-center w-full h-10 border border-gray-300 rounded-md cursor-pointer">
+                                            <FileInput onChange={handleFileChange} />
+                                        </label>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
 
                     <Button type="submit">Submit</Button>
                 </form>
             </Form>
+            <ToastContainer />
         </>
     );
 }

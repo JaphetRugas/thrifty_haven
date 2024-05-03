@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
 
     const formData = await req.formData();
     const name = formData.get('name') as string;
-    const description = formData.get('description') as string; 
+    const description = formData.get('description') as string;
     const price = parseInt(formData.get('price') as string);
     const quantityAvailable = parseInt(formData.get('quantityAvailable') as string);
 
@@ -89,3 +89,13 @@ export async function POST(req: NextRequest) {
     }
 }
 
+export async function GET(req: NextRequest) {
+    try {
+        const products = await db.query.productTable.findMany();
+
+        return NextResponse.json({ products });
+    } catch (error: any) {
+        console.error('Error retrieving products:', error);
+        return NextResponse.json({ message: 'Failed to retrieve products' }, { status: 500 });
+    }
+}

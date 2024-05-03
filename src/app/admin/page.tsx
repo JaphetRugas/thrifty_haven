@@ -1,7 +1,5 @@
 import { validateRequest } from '@/database/auth';
-import { notFound, redirect } from 'next/navigation';
-import { signOut } from "@/app/actions/auth.actions";
-import ProductForm from '@/components/admin/ProductForm';
+import { notFound, redirect } from 'next/navigation'; 
 
 export default async function AdminPage() {
     const { user } = await validateRequest();
@@ -13,17 +11,8 @@ export default async function AdminPage() {
     }
 
     return (
-        <div>
-            Admin Page
-            <p>{JSON.stringify(user.isAdmin)}</p>
+        <div> 
 
-            <ProductForm />
-
-            <form action={signOut}>
-                <button type="submit" className="text-red-500 hover:underline">
-                    Logout
-                </button>
-            </form>
         </div>
     )
 }
