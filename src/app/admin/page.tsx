@@ -1,5 +1,6 @@
+import Dashboard from '@/components/admin/Dashboard';
 import { validateRequest } from '@/database/auth';
-import { notFound, redirect } from 'next/navigation'; 
+import { notFound, redirect } from 'next/navigation';
 
 export default async function AdminPage() {
     const { user } = await validateRequest();
@@ -10,8 +11,13 @@ export default async function AdminPage() {
         notFound();
     }
 
+
     return (
-        <div> 
+        <div>
+            <div>
+                <h2>Sales Chart</h2>
+                <Dashboard />
+            </div>
 
         </div>
     )
