@@ -28,8 +28,7 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { useRouter } from 'next/navigation'
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { revalidatePath } from 'next/cache';
+import "react-toastify/dist/ReactToastify.css"; 
 
 interface Product {
     id: string;
