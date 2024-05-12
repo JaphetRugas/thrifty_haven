@@ -5,7 +5,7 @@ import { notFound, redirect } from "next/navigation";
 export default async function SignInPage() {
     const { user } = await validateRequest();
     if (user && user.isAdmin) {
-        redirect("/admin")
+        redirect("/admin/dashboard")
     }
     if (user && !user.isAdmin) {
         notFound();

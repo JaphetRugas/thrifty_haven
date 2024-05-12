@@ -3,7 +3,8 @@
 import { Badge } from "@/components/ui/badge"
 import {
     Card,
-    CardContent, 
+    CardContent,
+    CardDescription, 
 } from "@/components/ui/card" 
 import {
     Table,
@@ -12,7 +13,9 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table" 
+} from "@/components/ui/table"
+
+
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import Skeleton from "@mui/material/Skeleton";
@@ -32,7 +35,7 @@ interface Product {
     isActive: boolean;
 }
 
-export default function Products() {
+export default function Customers() {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
@@ -51,15 +54,7 @@ export default function Products() {
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="flex justify-between items-center mb-8">
-                <h1 className="text-3xl font-bold tracking-tighter md:text-4xl">Products</h1>
-                <Link href="/admin/addProduct">
-                    <Button size="sm" className="h-8 gap-1">
-                        <PlusCircle className="h-3.5 w-3.5" />
-                        <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                            Add Product
-                        </span>
-                    </Button>
-                </Link>
+                <h1 className="text-3xl font-bold tracking-tighter md:text-4xl">Customers</h1> 
             </div>
 
             <Card x-chunk="dashboard-06-chunk-0">

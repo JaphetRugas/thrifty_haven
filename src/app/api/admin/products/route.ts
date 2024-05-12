@@ -7,7 +7,7 @@ import cloudinary from "@/config/cloudinary";
 
 export async function POST(req: NextRequest) {
     const { user } = await validateRequest();
-    const userType = user?.isAdmin;
+    const userType = user?.isAdmin; 
 
     if (!user) {
         return NextResponse.redirect("/admin/sign-in");
@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
     const name = formData.get('name') as string;
     const description = formData.get('description') as string;
     const price = parseInt(formData.get('price') as string);
-    const quantityAvailable = parseInt(formData.get('quantityAvailable') as string);
+    const quantityAvailable = parseInt(formData.get('quantityAvailable') as string); 
 
     if (!name || !description || !price || !quantityAvailable) {
         return NextResponse.json({ message: 'Product name, description, price, and quantity are required' }, { status: 400 });
@@ -30,10 +30,9 @@ export async function POST(req: NextRequest) {
     const arrayBuffers = await fileImage.arrayBuffer();
     const buffer = new Uint8Array(arrayBuffers);
     const fileData = Buffer.from(buffer);
-
-
-    if (fileImage.type !== 'image/png' && fileImage.type !== 'image/jpg') {
-        return NextResponse.json({ message: 'Image file must be a png or jpg' }, { status: 400 });
+ 
+    if (fileImage.type !== 'image/png' && fileImage.type !== 'image/jpg' && fileImage.type !== 'image/jpeg') {
+        return NextResponse.json({ message: 'Image file must be a png or jpg or jpeg' }, { status: 400 });
     }
     const fileExtension = fileImage.type.split('/')[1];
     // Convert the image data to base64
@@ -45,9 +44,10 @@ export async function POST(req: NextRequest) {
         {
             folder: "products",
         }
-    );
+    ); 
 
     const fileUrl = result.secure_url;
+    console.log(fileUrl)
 
     try {
         const productId = generateId(15)
@@ -90,6 +90,18 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET(req: NextRequest) {
+    // Commented Out for api demonstration
+    // const { user } = await validateRequest();
+    // const userType = user?.isAdmin; 
+
+    // if (!user) {
+    //     return NextResponse.redirect("/admin/sign-in");
+    // }
+
+    // if (!userType) {
+    //     return NextResponse.json({ message: 'Unauthorized' }, { status: 403 });
+    //     console.log("Unauthorized")
+    // }
     try {
         const products = await db.query.productTable.findMany();
 

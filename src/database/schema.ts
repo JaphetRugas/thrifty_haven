@@ -6,12 +6,7 @@ export const userTable = pgTable("user_table", {
     passwordHash: text("password_hash").notNull(),
     isAdmin: boolean("is_admin").default(false).notNull(),
     firstName: text("first_name"),
-    lastName: text("last_name"),
-    age: text("age"),
-    birthday: timestamp("birthday", {
-        withTimezone: true,
-        mode: "date"
-    }),
+    lastName: text("last_name"), 
     phoneNumber: text("phone_number"),
     createdAt: timestamp("created_at", {
         withTimezone: true,
@@ -47,3 +42,4 @@ export const productTable = pgTable("product_table", {
         mode: "date"
     }).notNull()
 });
+ 

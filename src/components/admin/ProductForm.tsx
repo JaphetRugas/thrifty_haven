@@ -40,7 +40,7 @@ export default function ProductForm() {
     });
 
     // 2. Define a submit handler.
-    async function onSubmit(values: z.infer<typeof productFormSchema>) {
+    async function onSubmit(values: z.infer<typeof productFormSchema>) { 
         const formData = new FormData();
         const fileImage = values.image;
         if (!fileImage) {
