@@ -46,8 +46,7 @@ export async function POST(req: NextRequest) {
         }
     ); 
 
-    const fileUrl = result.secure_url;
-    console.log(fileUrl)
+    const fileUrl = result.secure_url; 
 
     try {
         const productId = generateId(15)
@@ -80,7 +79,7 @@ export async function POST(req: NextRequest) {
             })
 
         if (!result) {
-            return NextResponse.json({ message: 'Failed to upload certificate' }, { status: 500 });
+            return NextResponse.json({ message: 'Failed to upload product' }, { status: 500 });
         }
 
         return NextResponse.json({ message: 'Product uploaded successfully' });
