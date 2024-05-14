@@ -3,7 +3,7 @@ import Link from "next/link"
 import {
     Activity,
     ArrowUpRight,
-    CreditCard, 
+    CreditCard,
     Users,
 } from "lucide-react"
 
@@ -29,8 +29,40 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+import React, { useState, useEffect } from 'react';
+
+interface DashboardData {
+    totalActiveProducts: {
+        count: number;
+    }[];
+    totalCustomers: {
+        count: number;
+    }[];
+}
 
 export default function Dashboard() {
+    const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('/api/admin');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+                const data = await response.json();
+                setDashboardData(data);
+            } catch (error) {
+                console.error('Error fetching dashboard data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    if (!dashboardData) {
+        return null;
+    }
 
     return (<main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
         <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
@@ -56,9 +88,9 @@ export default function Dashboard() {
                     <Users className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">+2350</div>
+                    <div className="text-2xl font-bold">+{dashboardData.totalCustomers[0].count}</div>
                     <p className="text-xs text-muted-foreground">
-                        +180.1% from last month
+                        Total Customers
                     </p>
                 </CardContent>
             </Card>
@@ -80,9 +112,9 @@ export default function Dashboard() {
                     <Activity className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">+573</div>
+                    <div className="text-2xl font-bold">+{dashboardData?.totalActiveProducts?.[0]?.count}</div>
                     <p className="text-xs text-muted-foreground">
-                        +201 since last hour
+                        Total active products
                     </p>
                 </CardContent>
             </Card>

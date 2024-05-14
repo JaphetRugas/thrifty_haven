@@ -2,8 +2,7 @@ import db from '@/database';
 import { productTable } from '@/database/schema';
 import { eq } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
-import cloudinary from "@/config/cloudinary";
-import { generateId } from 'lucia';
+import cloudinary from "@/config/cloudinary"; 
 
 interface Props {
     params: { productId: string };
@@ -42,11 +41,12 @@ export async function PUT(request: NextRequest, { params }: Props) {
     const price = parseInt(formData.get('price') as string);
     const quantityAvailable = parseInt(formData.get('quantityAvailable') as string);
     const isActiveValue = formData.get('isActive');
-    const isActive = isActiveValue === 'true' ? true : false; 
+    const isActive = isActiveValue === 'true' ? true : false;
 
     if (!name || !description || !price || !quantityAvailable) {
         return NextResponse.json({ message: 'Product name, description, price, and quantity are required' }, { status: 400 });
-    }
+    } 
+
     let fileUrl: string | undefined;
     const fileImage = formData.get('image') as File;
     if (fileImage.name !== '') {
@@ -71,9 +71,9 @@ export async function PUT(request: NextRequest, { params }: Props) {
         );
 
         fileUrl = result.secure_url;
-    } 
+    }
 
-    try { 
+    try {
 
         const existingProduct = await db.query.productTable.findFirst({
             where: eq(productTable.id, productId)
@@ -116,7 +116,7 @@ export async function PUT(request: NextRequest, { params }: Props) {
             return NextResponse.json({ message: 'Failed to upload product' }, { status: 500 });
         }
 
-        return NextResponse.json({ message: 'Product uploaded successfully' });
+        return NextResponse.json({ message: 'Product Updated Successfully' });
     } catch (error: any) {
         console.error('Error uploading image to Cloud Storage:', error);
     }

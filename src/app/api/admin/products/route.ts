@@ -3,25 +3,34 @@ import { NextRequest, NextResponse } from 'next/server';
 import db from "@/database"
 import { productTable } from "@/database/schema"
 import { generateId } from "lucia"
-import cloudinary from "@/config/cloudinary";
+import cloudinary from "@/config/cloudinary"; 
 
 export async function POST(req: NextRequest) {
-    const { user } = await validateRequest();
-    const userType = user?.isAdmin; 
+    // Commented out for api demonstration
+    // const { user } = await validateRequest();
+    // const userType = user?.isAdmin; 
 
-    if (!user) {
-        return NextResponse.redirect("/admin/sign-in");
-    }
+    // if (!user) {
+    //     return NextResponse.redirect("/admin/sign-in");
+    // }
 
-    if (!userType) {
-        return NextResponse.json({ message: 'Unauthorized' }, { status: 403 });
-    }
+    // if (!userType) {
+    //     return NextResponse.json({ message: 'Unauthorized' }, { status: 403 });
+    // }
 
     const formData = await req.formData();
     const name = formData.get('name') as string;
     const description = formData.get('description') as string;
     const price = parseInt(formData.get('price') as string);
     const quantityAvailable = parseInt(formData.get('quantityAvailable') as string); 
+
+    if(!Number.isInteger(price)) {
+        return NextResponse.json({ message: 'Price must be a positive integer' }, { status: 400 });
+    }
+
+    if(!Number.isInteger(quantityAvailable)) {
+        return NextResponse.json({ message: 'Quantity must be a positive value' }, { status: 400 });
+    }
 
     if (!name || !description || !price || !quantityAvailable) {
         return NextResponse.json({ message: 'Product name, description, price, and quantity are required' }, { status: 400 });
@@ -109,4 +118,4 @@ export async function GET(req: NextRequest) {
         console.error('Error retrieving products:', error);
         return NextResponse.json({ message: 'Failed to retrieve products' }, { status: 500 });
     }
-}
+} 
