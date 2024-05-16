@@ -1,20 +1,32 @@
-'use client'
+"use client"
 
 import React, { useEffect, useState } from 'react';
 import Image from "next/image"
 import {
-    ChevronLeft, 
-} from "lucide-react" 
-import { Button } from "@/components/ui/button" 
-import { useRouter } from 'next/navigation' 
-import { TabsTrigger, TabsList, TabsContent, Tabs } from "@/components/ui/tabs"
+    ChevronLeft,
+} from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { useRouter } from 'next/navigation'
 import { TableHead, TableRow, TableHeader, TableCell, TableBody, Table } from "@/components/ui/table"
 import "react-toastify/dist/ReactToastify.css";
+
+interface Product {
+    productName: string;
+    quantity: number;
+}
+
+interface Order {
+    id: string;
+    purchase_info: Product[];
+    date: string;
+    status: string;
+}
 
 interface CustomerOrders {
     id: string;
     firstName: string;
     lastName: string;
+    transaction: Order[];
 }
 
 interface Params {
@@ -52,6 +64,19 @@ export default function CustomerPage({ params }: { params: Params }) {
         )
     }
 
+    const getStatusColor = (status: string) => {
+        switch (status) {
+            case 'In Progress':
+                return 'text-yellow-500';
+            case 'Confirmed':
+                return 'text-green-500';
+            case 'Cancelled':
+                return 'text-red-500';
+            default:
+                return '';
+        }
+    };
+
     return (
         <main className="container mx-auto px-4 py-8">
             <div className="gap-4">
@@ -66,228 +91,28 @@ export default function CustomerPage({ params }: { params: Params }) {
                 </div>
             </div>
             <div className="overflow-x-auto w-full">
-                <Tabs className="w-full" defaultValue="all">
-                    <TabsList className="flex w-full border-b border-gray-200 dark:border-gray-800">
-                        <TabsTrigger value="all">All</TabsTrigger>
-                        <TabsTrigger value="fulfilled">Fulfilled</TabsTrigger>
-                        <TabsTrigger value="pending">Pending</TabsTrigger>
-                        <TabsTrigger value="backordered">Backordered</TabsTrigger>
-                    </TabsList>
-                    <TabsContent value="all">
-                        <div className="overflow-x-auto w-full">
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead>Product</TableHead>
-                                        <TableHead>Release Date</TableHead>
-                                        <TableHead>Quantity Ordered</TableHead>
-                                        <TableHead>Order Status</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    <TableRow>
-                                        <TableCell className="font-medium">Acme Hover Scooter</TableCell>
-                                        <TableCell>2023-06-15</TableCell>
-                                        <TableCell>124</TableCell>
-                                        <TableCell className="text-green-500">Fulfilled</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className="font-medium">Quantum Headphones</TableCell>
-                                        <TableCell>2023-07-01</TableCell>
-                                        <TableCell>89</TableCell>
-                                        <TableCell className="text-yellow-500">Pending</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className="font-medium">Lumina Smart Lamp</TableCell>
-                                        <TableCell>2023-08-01</TableCell>
-                                        <TableCell>212</TableCell>
-                                        <TableCell className="text-red-500">Backordered</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className="font-medium">Eco-Friendly Planter</TableCell>
-                                        <TableCell>2023-09-15</TableCell>
-                                        <TableCell>67</TableCell>
-                                        <TableCell className="text-green-500">Fulfilled</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className="font-medium">Fusion Fitness Tracker</TableCell>
-                                        <TableCell>2023-10-01</TableCell>
-                                        <TableCell>154</TableCell>
-                                        <TableCell className="text-yellow-500">Pending</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className="font-medium">Acme Hover Scooter</TableCell>
-                                        <TableCell>2023-06-15</TableCell>
-                                        <TableCell>124</TableCell>
-                                        <TableCell className="text-green-500">Fulfilled</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className="font-medium">Quantum Headphones</TableCell>
-                                        <TableCell>2023-07-01</TableCell>
-                                        <TableCell>89</TableCell>
-                                        <TableCell className="text-yellow-500">Pending</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className="font-medium">Lumina Smart Lamp</TableCell>
-                                        <TableCell>2023-08-01</TableCell>
-                                        <TableCell>212</TableCell>
-                                        <TableCell className="text-red-500">Backordered</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className="font-medium">Eco-Friendly Planter</TableCell>
-                                        <TableCell>2023-09-15</TableCell>
-                                        <TableCell>67</TableCell>
-                                        <TableCell className="text-green-500">Fulfilled</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className="font-medium">Fusion Fitness Tracker</TableCell>
-                                        <TableCell>2023-10-01</TableCell>
-                                        <TableCell>154</TableCell>
-                                        <TableCell className="text-yellow-500">Pending</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className="font-medium">Acme Hover Scooter</TableCell>
-                                        <TableCell>2023-06-15</TableCell>
-                                        <TableCell>124</TableCell>
-                                        <TableCell className="text-green-500">Fulfilled</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className="font-medium">Quantum Headphones</TableCell>
-                                        <TableCell>2023-07-01</TableCell>
-                                        <TableCell>89</TableCell>
-                                        <TableCell className="text-yellow-500">Pending</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className="font-medium">Lumina Smart Lamp</TableCell>
-                                        <TableCell>2023-08-01</TableCell>
-                                        <TableCell>212</TableCell>
-                                        <TableCell className="text-red-500">Backordered</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className="font-medium">Eco-Friendly Planter</TableCell>
-                                        <TableCell>2023-09-15</TableCell>
-                                        <TableCell>67</TableCell>
-                                        <TableCell className="text-green-500">Fulfilled</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className="font-medium">Fusion Fitness Tracker</TableCell>
-                                        <TableCell>2023-10-01</TableCell>
-                                        <TableCell>154</TableCell>
-                                        <TableCell className="text-yellow-500">Pending</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className="font-medium">Acme Hover Scooter</TableCell>
-                                        <TableCell>2023-06-15</TableCell>
-                                        <TableCell>124</TableCell>
-                                        <TableCell className="text-green-500">Fulfilled</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className="font-medium">Quantum Headphones</TableCell>
-                                        <TableCell>2023-07-01</TableCell>
-                                        <TableCell>89</TableCell>
-                                        <TableCell className="text-yellow-500">Pending</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className="font-medium">Lumina Smart Lamp</TableCell>
-                                        <TableCell>2023-08-01</TableCell>
-                                        <TableCell>212</TableCell>
-                                        <TableCell className="text-red-500">Backordered</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className="font-medium">Eco-Friendly Planter</TableCell>
-                                        <TableCell>2023-09-15</TableCell>
-                                        <TableCell>67</TableCell>
-                                        <TableCell className="text-green-500">Fulfilled</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className="font-medium">Fusion Fitness Tracker</TableCell>
-                                        <TableCell>2023-10-01</TableCell>
-                                        <TableCell>154</TableCell>
-                                        <TableCell className="text-yellow-500">Pending</TableCell>
-                                    </TableRow>
-                                </TableBody>
-                            </Table>
-                        </div>
-                    </TabsContent>
-                    <TabsContent value="fulfilled">
-                        <div className="overflow-x-auto w-full">
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead>Product</TableHead>
-                                        <TableHead>Release Date</TableHead>
-                                        <TableHead>Quantity Ordered</TableHead>
-                                        <TableHead>Order Status</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    <TableRow>
-                                        <TableCell className="font-medium">Acme Hover Scooter</TableCell>
-                                        <TableCell>2023-06-15</TableCell>
-                                        <TableCell>124</TableCell>
-                                        <TableCell className="text-green-500">Fulfilled</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className="font-medium">Eco-Friendly Planter</TableCell>
-                                        <TableCell>2023-09-15</TableCell>
-                                        <TableCell>67</TableCell>
-                                        <TableCell className="text-green-500">Fulfilled</TableCell>
-                                    </TableRow>
-                                </TableBody>
-                            </Table>
-                        </div>
-                    </TabsContent>
-                    <TabsContent value="pending">
-                        <div className="overflow-x-auto w-full">
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead>Product</TableHead>
-                                        <TableHead>Release Date</TableHead>
-                                        <TableHead>Quantity Ordered</TableHead>
-                                        <TableHead>Order Status</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    <TableRow>
-                                        <TableCell className="font-medium">Quantum Headphones</TableCell>
-                                        <TableCell>2023-07-01</TableCell>
-                                        <TableCell>89</TableCell>
-                                        <TableCell className="text-yellow-500">Pending</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className="font-medium">Fusion Fitness Tracker</TableCell>
-                                        <TableCell>2023-10-01</TableCell>
-                                        <TableCell>154</TableCell>
-                                        <TableCell className="text-yellow-500">Pending</TableCell>
-                                    </TableRow>
-                                </TableBody>
-                            </Table>
-                        </div>
-                    </TabsContent>
-                    <TabsContent value="backordered">
-                        <div className="overflow-x-auto w-full">
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead>Product</TableHead>
-                                        <TableHead>Release Date</TableHead>
-                                        <TableHead>Quantity Ordered</TableHead>
-                                        <TableHead>Order Status</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    <TableRow>
-                                        <TableCell className="font-medium">Lumina Smart Lamp</TableCell>
-                                        <TableCell>2023-08-01</TableCell>
-                                        <TableCell>212</TableCell>
-                                        <TableCell className="text-red-500">Backordered</TableCell>
-                                    </TableRow>
-                                </TableBody>
-                            </Table>
-                        </div>
-                    </TabsContent>
-                </Tabs>
+                <div className="overflow-x-auto w-full">
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Product</TableHead>
+                                <TableHead>Quantity Ordered</TableHead>
+                                <TableHead>Release Date</TableHead>
+                                <TableHead>Order Status</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {customerOrders?.transaction.map(order => (
+                                <TableRow key={order.id}>
+                                    <TableCell>{order.purchase_info.map(product => product.productName).join(', ')}</TableCell>
+                                    <TableCell>{order.purchase_info.map(product => product.quantity).reduce((acc, qty) => acc + qty, 0)}</TableCell>
+                                    <TableCell>{order.date}</TableCell>
+                                    <TableCell className={getStatusColor(order.status)}>{order.status}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </div>
             </div>
         </main>
     )

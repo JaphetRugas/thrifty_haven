@@ -12,7 +12,10 @@ export async function GET(request: NextRequest, { params }: Props) {
         const { customerId } = params; 
 
         const userOrders = await db.query.userTable.findFirst({
-            where: eq(userTable.id, customerId)
+            where: eq(userTable.id, customerId),
+            with: {
+                transaction: true
+            }
         });
 
         if (!userOrders) {
